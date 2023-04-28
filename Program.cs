@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,7 +10,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("MyAPIOnly", policy => policy.RequireClaim("scope","myapi:secrets"));
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
+    options.AddPolicy("UserOnly", policy => policy.RequireClaim(ClaimTypes.Role, "user"));
+});
 
 var app = builder.Build();
 

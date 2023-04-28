@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace AspNetCoreUserJwtsDemo.Controllers;
 
 [ApiController]
-[Authorize(Roles = "admin, manager")]
+[Authorize(Roles = "admin, manager", Policy = "MyAPIOnly")]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
